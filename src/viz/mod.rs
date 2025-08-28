@@ -25,7 +25,7 @@ use crate::viz_style::{MarkerShape, SeriesStyle};
 
 use crate::models::DataPoint;
 use anyhow::{Result, anyhow};
-use num_format::Locale;
+use num_format::ToFormattedString;
 
 use plotters::backend::DrawingBackend;
 use plotters::coord::Shift;
@@ -203,7 +203,7 @@ pub fn plot_chart<P: AsRef<Path>>(
         max_val += 1.0;
     }
 
-    let (num_locale, _dec_sep) = map_locale(locale_tag);
+    let (_num_locale, _dec_sep) = map_locale(locale_tag);
 
     if out_path.extension().and_then(|s| s.to_str()) == Some("svg") {
         let root = SVGBackend::new(path_string.as_str(), (width, height)).into_drawing_area();
@@ -214,7 +214,7 @@ pub fn plot_chart<P: AsRef<Path>>(
             max_year,
             min_val,
             max_val,
-            num_locale,
+            locale_tag,
             legend,
             title,
             kind,
@@ -230,7 +230,7 @@ pub fn plot_chart<P: AsRef<Path>>(
             max_year,
             min_val,
             max_val,
-            num_locale,
+            locale_tag,
             legend,
             title,
             kind,
@@ -250,7 +250,7 @@ fn draw_chart<DB>(
     max_year: i32,
     min_val: f64,
     max_val: f64,
-    _num_locale: &Locale,
+    locale_tag: &str,
     legend: LegendMode,
     title: &str,
     kind: PlotKind,
@@ -293,7 +293,8 @@ where
         (None, sw) => format!("Value ({sw})"),
     };
 
-    // X/Y tick formatters
+    // X/Y tick formatters with locale support
+    let (num_locale, dec_sep) = map_locale(locale_tag);
     let x_label_fmt = |x: &f64| (x.round() as i32).to_string();
     let y_label_fmt_scaled = |v: &f64| {
         let a = v.abs();
@@ -304,7 +305,27 @@ where
         } else {
             2
         };
-        format!("{:.*}", prec, *v)
+        
+        // Use locale-aware formatting
+        if prec == 0 {
+            // Integer formatting with locale-aware thousands separators
+            let int_val = v.round() as i64;
+            int_val.to_formatted_string(num_locale)
+        } else {
+            // Float formatting with locale-aware decimal separator
+            let s = format!("{:.*}", prec, *v);
+            if let Some((int_part, frac_part)) = s.split_once('.') {
+                let sign = if int_part.starts_with('-') { "-" } else { "" };
+                let digits = int_part.trim_start_matches('-');
+                let int_num: i64 = digits.parse().unwrap_or(0);
+                let grouped = int_num.to_formatted_string(num_locale);
+                format!("{}{}{}{}", sign, grouped, dec_sep, frac_part)
+            } else {
+                // No decimal part, just format as integer
+                let int_val = v.round() as i64;
+                int_val.to_formatted_string(num_locale)
+            }
+        }
     };
     let x_label_count = ((max_year - min_year + 1) as usize).min(12);
     let y_label_count = 10usize;
