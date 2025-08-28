@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 //! Adapter helpers to use SeriesStyle with the plotters crate.
 //!
 //! Usage example (inside your plotting function):

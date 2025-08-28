@@ -9,7 +9,7 @@
 # wbi-rs 🦀📊📈
 
 <p align="center">
-  <img src="https://github.com/ArdentEmpiricist/wbi-rs/blob/main/assets/logo.png?raw=true" alt="wbi-rs Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/ArdentEmpiricist/wbi-rs/refs/heads/main/assets/logo.png?raw=true" alt="wbi-rs Logo" width="200"/>
 </p>
 
 Fetch, analyze, and visualize World Bank data from Rust.  
@@ -195,6 +195,7 @@ The GUI provides an intuitive interface for:
 ### Platform Support
 
 The GUI application works on:
+
 - **Windows**: Native look and feel
 - **macOS**: Cocoa interface
 - **Linux**: X11 and Wayland support

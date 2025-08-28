@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 //! Styling utilities to consistently map (country, indicator) to colors, shapes, and line styles.
 //!
 //! Design:

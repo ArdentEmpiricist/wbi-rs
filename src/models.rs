@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 use serde::{Deserialize, Serialize};
 
 /// Data model and (de)serialization helpers for World Bank API responses.

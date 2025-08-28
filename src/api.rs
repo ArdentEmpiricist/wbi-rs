@@ -1,3 +1,4 @@
+#![forbid(unsafe_code)]
 /// Synchronous client for the **World Bank Indicators API (v2)**.
 ///
 /// This module focuses on the `country/{codes}/indicator/{codes}` endpoint and returns

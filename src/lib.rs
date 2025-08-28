@@ -1,3 +1,7 @@
+#![forbid(unsafe_code)]
+#![doc(
+    html_logo_url = "https://raw.githubusercontent.com/ArdentEmpiricist/wbi-rs/refs/heads/main/assets/logo.png"
+)]
 //! # wbi_rs
 //!
 //! A lightweight **Rust library + CLI** to fetch, store, visualize, and summarize

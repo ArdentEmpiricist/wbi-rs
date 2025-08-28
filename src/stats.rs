@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 use crate::models::{DataPoint, GroupKey};
 use serde::{Deserialize, Serialize};
 

@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 /// Persistence helpers for exporting observations as **CSV** or **pretty JSON**.
 ///
 /// Save observations as CSV with a fixed header order.

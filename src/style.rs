@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 //! Flexible, testable style assignment system for country-consistent styling.
 //!
 //! When enabled via the `country-styles` feature flag, this module provides
