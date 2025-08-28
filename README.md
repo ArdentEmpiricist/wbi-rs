@@ -73,8 +73,8 @@ This project provides a **CLI**, **GUI**, and **library API** to retrieve time s
 
 Download a prebuilt binary (GitHub Releases):
 
-1) Go to **GitHub → Releases**: [https://github.com/ArdentEmpiricist/wbi-rs/releases/new](https://github.com/ArdentEmpiricist/wbi-rs/releases/new)
-2) Download the asset for your platform
+1) Go to **GitHub → Releases**: [https://github.com/ArdentEmpiricist/wbi-rs/releases/latest](https://github.com/ArdentEmpiricist/wbi-rs/releases/latest)
+2) Download the binary for your platform
 
 Via cargo/crates.io:
 
