@@ -218,7 +218,7 @@ impl WbiApp {
         let plot_width = self.plot_width;
         let plot_height = self.plot_height;
         let plot_title = if self.plot_title.trim().is_empty() {
-            "World Bank Indicators".to_string()
+            "World Bank Indicator(s)".to_string()
         } else {
             self.plot_title.clone()
         };
