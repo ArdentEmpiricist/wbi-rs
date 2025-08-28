@@ -68,7 +68,7 @@ percent-encoding = "2.3.1"
 ahash = "0.8.12"
 # GUI dependencies
 eframe = "0.30"
-egui = "0.30"
+egui = "0.32"
 rfd = "0.15"
 dirs = "5.0"
 env_logger = "0.11"
