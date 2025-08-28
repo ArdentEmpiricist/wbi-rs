@@ -79,8 +79,18 @@ Download a prebuilt binary (GitHub Releases):
 Via cargo/crates.io:
 
 ```bash
+# Install both CLI and GUI binaries (default)
 cargo install wbi-rs
+wbi --help    # CLI binary
+wbi-gui       # GUI binary
+
+# Install CLI only
+cargo install wbi-rs --bin wbi
 wbi --help
+
+# Install GUI only  
+cargo install wbi-rs --bin wbi-gui
+wbi-gui
 ```
 
 From source:
@@ -88,7 +98,15 @@ From source:
 ```bash
 git clone <this-repo>
 cd wbi-rs
+
+# Build both CLI and GUI binaries (default)
 cargo build --release
+
+# Build CLI only
+cargo build --release --bin wbi
+
+# Build GUI only
+cargo build --release --bin wbi-gui
 ```
 
 As a library (example):
