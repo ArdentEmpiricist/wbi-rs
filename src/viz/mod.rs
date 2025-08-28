@@ -41,7 +41,7 @@ use std::collections::{BTreeMap, BTreeSet, HashMap};
 use std::path::Path;
 use std::sync::Once;
 
-use legend::estimate_top_bottom_legend_height_px;
+use legend::{draw_legend_panel, estimate_top_bottom_legend_height_px};
 use util::{
     choose_axis_scale, compute_left_label_area_px, derive_axis_unit, is_percentage_like,
     map_locale, office_color,
@@ -815,17 +815,12 @@ where
             .map_err(|e| anyhow::anyhow!("{:?}", e))?;
     } else if let Some(ref legend_area) = legend_area_opt {
         // Best practice: no explicit "Legend" title
-        // Draw external legend items using simple shapes for each item
-        if !legend_items.is_empty() {
-            let mut y_pos = 20;
-            for (label, style) in &legend_items {
-                // Draw a simple marker circle for now
-                let color = rgb_color(style);
-                legend_area.draw(&Circle::new((20, y_pos), 4, color.filled()))?;
-                legend_area.draw(&Text::new(label.clone(), (32, y_pos), ("sans-serif", 14)))?;
-                y_pos += 25;
-            }
-        }
+        // Convert SeriesStyle to RGBAColor for the legend panel
+        let legend_items_rgb: Vec<(String, RGBAColor)> = legend_items
+            .iter()
+            .map(|(label, style)| (label.clone(), rgb_color(style)))
+            .collect();
+        draw_legend_panel(legend_area, &legend_items_rgb, "", legend, axis_x_start_px)?;
     }
 
     // ----------------------------
