@@ -231,8 +231,6 @@ The GUI application works on:
 
 The application will download the data, save it to your chosen location, and create a chart—all with a single click.
 
-For detailed documentation, see [GUI.md](docs/GUI.md).
-
 ---
 
 ## CLI usage
