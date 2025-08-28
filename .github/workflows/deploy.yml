@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     tags:
-      - "[0-9]+.[0-9]+.[0-9]+"
+      - "[0-9]+\\.[0-9]+\\.[0-9]+"
 
 permissions:
   contents: write
@@ -15,7 +15,6 @@ jobs:
 
     strategy:
       matrix:
-        # You can add more, for any target you'd like!
         include:
           - build: linux
             os: ubuntu-latest
@@ -42,11 +41,8 @@ jobs:
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Install Rust
-        # Or @nightly if you want
         uses: dtolnay/rust-toolchain@stable
-        # Arguments to pass in
         with:
-          # Make Rust compile to our target (defined in the matrix)
           targets: ${{ matrix.target }}
 
       - name: Build
@@ -56,30 +52,41 @@ jobs:
           command: build
           args: --verbose --release --target ${{ matrix.target }}
 
-      - name: Build archive
+      - name: Package binaries
         shell: bash
         run: |
-          # Replace with the name of your binary
-          binary_name="wbi"
+          # Define all binaries you want to publish
+          binaries=("wbi" "wbi-gui")
+          for binary in "${binaries[@]}"; do
+            # Create a directory named by binary, version, and platform
+            dirname="${binary}-${VERSION}-${{ matrix.target }}"
+            mkdir -p "$dirname"
 
-          dirname="$binary_name-${{ env.VERSION }}-${{ matrix.target }}"
-          mkdir "$dirname"
-          if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            mv "target/${{ matrix.target }}/release/$binary_name.exe" "$dirname"
-          else
-            mv "target/${{ matrix.target }}/release/$binary_name" "$dirname"
-          fi
+            # Move the appropriate artifact into that directory
+            if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+              mv "target/${{ matrix.target }}/release/${binary}.exe" "$dirname/"
+            else
+              mv "target/${{ matrix.target }}/release/${binary}" "$dirname/"
+            fi
 
-          if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            7z a "$dirname.zip" "$dirname"
-            echo "ASSET=$dirname.zip" >> $GITHUB_ENV
-          else
-            tar -czf "$dirname.tar.gz" "$dirname"
-            echo "ASSET=$dirname.tar.gz" >> $GITHUB_ENV
-          fi
+            # Compress each directory into its own archive
+            if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+              artifact="${dirname}.zip"
+              7z a "$artifact" "$dirname" >/dev/null
+            else
+              artifact="${dirname}.tar.gz"
+              tar -czf "$artifact" "$dirname"
+            fi
+
+            # Export each archive under a unique ENV var for the release step
+            key="ASSET_$(echo "$binary" | tr '[:lower:]-' '[:upper:]_')"
+            echo "${key}=${artifact}" >> $GITHUB_ENV
+          done
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
+          # Reference both the CLI and GUI archives
           files: |
-            ${{ env.ASSET }}
+            ${{ env.ASSET_WBI }}
+            ${{ env.ASSET_WBI_GUI }}
