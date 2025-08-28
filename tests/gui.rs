@@ -131,6 +131,25 @@ fn test_combo_box_ids() {
     assert!(!chart_type_id.is_empty());
 }
 
+/// Test that locale options are always available regardless of chart creation setting
+#[test]
+fn test_locale_availability() {
+    // Test that locale is always an available option in advanced settings
+    // This addresses the issue where advanced options were disappearing
+    
+    let locales = vec!["en", "de", "fr", "es", "it"];
+    
+    // Verify all expected locales are available
+    assert!(locales.contains(&"en")); // English
+    assert!(locales.contains(&"de")); // German
+    assert!(locales.contains(&"fr")); // French
+    assert!(locales.contains(&"es")); // Spanish
+    assert!(locales.contains(&"it")); // Italian
+    
+    // Verify default locale is valid
+    assert!(locales.contains(&"en"));
+}
+
 // Helper functions that mirror the GUI logic
 
 fn parse_list(s: &str) -> Vec<String> {

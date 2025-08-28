@@ -369,24 +369,24 @@ impl eframe::App for WbiApp {
                             .on_hover_text("Optional source ID (e.g., 2 for WDI). Required for multiple indicators.");
                     });
 
+                    ui.horizontal(|ui| {
+                        ui.label("Locale:");
+                        egui::ComboBox::from_id_salt("locale_combo")
+                            .selected_text(&self.locale)
+                            .show_ui(ui, |ui| {
+                                ui.selectable_value(&mut self.locale, "en".to_string(), "English (en)");
+                                ui.selectable_value(&mut self.locale, "de".to_string(), "German (de)");
+                                ui.selectable_value(&mut self.locale, "fr".to_string(), "French (fr)");
+                                ui.selectable_value(&mut self.locale, "es".to_string(), "Spanish (es)");
+                                ui.selectable_value(&mut self.locale, "it".to_string(), "Italian (it)");
+                            });
+                    });
+
                     if self.create_plot {
                         ui.horizontal(|ui| {
                             ui.label("Chart title:");
                             ui.text_edit_singleline(&mut self.plot_title)
                                 .on_hover_text("Custom title for the chart");
-                        });
-
-                        ui.horizontal(|ui| {
-                            ui.label("Locale:");
-                            egui::ComboBox::from_id_salt("locale_combo")
-                                .selected_text(&self.locale)
-                                .show_ui(ui, |ui| {
-                                    ui.selectable_value(&mut self.locale, "en".to_string(), "English (en)");
-                                    ui.selectable_value(&mut self.locale, "de".to_string(), "German (de)");
-                                    ui.selectable_value(&mut self.locale, "fr".to_string(), "French (fr)");
-                                    ui.selectable_value(&mut self.locale, "es".to_string(), "Spanish (es)");
-                                    ui.selectable_value(&mut self.locale, "it".to_string(), "Italian (it)");
-                                });
                         });
 
                         ui.horizontal(|ui| {
