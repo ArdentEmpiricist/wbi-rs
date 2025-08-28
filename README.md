@@ -81,8 +81,8 @@ Via cargo/crates.io:
 ```bash
 # Install both CLI and GUI binaries (default)
 cargo install wbi-rs
-wbi --help
-wbi-gui
+wbi --help    # CLI binary
+wbi-gui       # GUI binary
 
 # Install CLI only
 cargo install wbi-rs --bin wbi
