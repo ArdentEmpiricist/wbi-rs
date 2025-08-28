@@ -212,6 +212,8 @@ The GUI provides an intuitive interface for:
 - **File Management**: Native file browser integration with home directory defaults
 - **Real-time Feedback**: Progress indicators and clear error messages
 
+> Advanced options for plots only visible if "Create chart" checkbox is active.
+
 ### Platform Support
 
 The GUI application works on:
