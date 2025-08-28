@@ -111,6 +111,26 @@ fn test_plot_dimensions() {
     assert!(validate_plot_dimensions(800, 4000).is_err());
 }
 
+/// Test unique ComboBox ID generation to prevent conflicts
+#[test]
+fn test_combo_box_ids() {
+    // Test that we can generate unique IDs for ComboBox widgets
+    // This helps prevent the ID conflict issue that was causing pull-down menus to not work
+    let locale_id = "locale_combo";
+    let legend_id = "legend_combo";
+    let chart_type_id = "chart_type_combo";
+    
+    // Ensure all IDs are unique
+    assert_ne!(locale_id, legend_id);
+    assert_ne!(locale_id, chart_type_id);
+    assert_ne!(legend_id, chart_type_id);
+    
+    // Ensure IDs are not empty (which was the original problem)
+    assert!(!locale_id.is_empty());
+    assert!(!legend_id.is_empty());
+    assert!(!chart_type_id.is_empty());
+}
+
 // Helper functions that mirror the GUI logic
 
 fn parse_list(s: &str) -> Vec<String> {

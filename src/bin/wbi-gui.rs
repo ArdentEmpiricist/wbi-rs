@@ -378,7 +378,7 @@ impl eframe::App for WbiApp {
 
                         ui.horizontal(|ui| {
                             ui.label("Locale:");
-                            egui::ComboBox::from_label("")
+                            egui::ComboBox::from_id_salt("locale_combo")
                                 .selected_text(&self.locale)
                                 .show_ui(ui, |ui| {
                                     ui.selectable_value(&mut self.locale, "en".to_string(), "English (en)");
@@ -391,7 +391,7 @@ impl eframe::App for WbiApp {
 
                         ui.horizontal(|ui| {
                             ui.label("Legend position:");
-                            egui::ComboBox::from_label("")
+                            egui::ComboBox::from_id_salt("legend_combo")
                                 .selected_text(format!("{:?}", self.legend_position))
                                 .show_ui(ui, |ui| {
                                     ui.selectable_value(&mut self.legend_position, LegendPosition::Bottom, "Bottom");
@@ -403,7 +403,7 @@ impl eframe::App for WbiApp {
 
                         ui.horizontal(|ui| {
                             ui.label("Chart type:");
-                            egui::ComboBox::from_label("")
+                            egui::ComboBox::from_id_salt("chart_type_combo")
                                 .selected_text(format!("{:?}", self.plot_kind))
                                 .show_ui(ui, |ui| {
                                     ui.selectable_value(&mut self.plot_kind, PlotKindOption::Line, "Line");
