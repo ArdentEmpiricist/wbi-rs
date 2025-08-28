@@ -190,7 +190,7 @@ The `--country-styles` option is available at runtime and does not require any s
 For users who prefer a graphical interface, `wbi-rs` includes a modern, cross-platform desktop application.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ArdentEmpiricist/wbi-rs/refs/heads/development/assets/gui.png alt="gui example" style='width: 90%; object-fit: contain'/>
+  <img src="https://raw.githubusercontent.com/ArdentEmpiricist/wbi-rs/refs/heads/main/assets/gui.png" alt="gui example" style='width: 90%; object-fit: contain'/>
 </p>
 
 ### Installation and Usage
