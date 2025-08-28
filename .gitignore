@@ -20,6 +20,7 @@ target/
 !assets/example_plot.svg
 !assets/example_stats.png
 !assets/example_multi_indicator.svg
+!assets/gui.png
 
 *.csv
 *.svg
