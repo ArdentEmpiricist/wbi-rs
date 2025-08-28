@@ -153,6 +153,8 @@ Output:
   <img src="https://raw.githubusercontent.com/ArdentEmpiricist/wbi-rs/bf42ecfa7f9a4a559b886aa5bf48d397fb41233d/assets/example_plot.svg" alt="example plot" style='width: 90%; object-fit: contain'/>
 </p>
 
+---
+
 ### Country-Consistent Styling
 
 You can enable country-consistent styling where all series for the same country share one base hue from the MS Office palette, while indicators within that country are differentiated by shades:
