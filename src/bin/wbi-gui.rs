@@ -25,12 +25,12 @@ fn main() -> Result<(), eframe::Error> {
         viewport: egui::ViewportBuilder::default()
             .with_inner_size([800.0, 600.0])
             .with_min_inner_size([600.0, 400.0])
-            .with_title("World Bank Indicators - wbi-rs"),
+            .with_title("wbi-rs"),
         ..Default::default()
     };
 
     eframe::run_native(
-        "World Bank Indicators",
+        "wbi-rs",
         options,
         Box::new(|_cc| Ok(Box::new(WbiApp::new()))),
     )
@@ -306,7 +306,7 @@ impl eframe::App for WbiApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             egui::ScrollArea::vertical().show(ui, |ui| {
-                ui.heading("World Bank Indicators Data Tool");
+                ui.heading("wbi-rs - A Tool To Fetch World Bank Indicator Data");
                 ui.add_space(10.0);
 
                 // Main input section
