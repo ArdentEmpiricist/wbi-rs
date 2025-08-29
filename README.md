@@ -205,7 +205,7 @@ cargo build --release --bin wbi-gui
 cargo run --release --bin wbi-gui
 ```
 
-### Features
+### Features-GUI
 
 The GUI provides an intuitive interface for:
 
