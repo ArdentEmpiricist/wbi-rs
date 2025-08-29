@@ -22,9 +22,16 @@ This project provides a **CLI**, **GUI**, and **library API** to retrieve time s
 ## Table of contents
 
 - [Features](#features)
+  - [What it can do](#what-it-can-do)
+  - [Under the hood](#under-the-hood)
 - [Install](#install)
 - [Quick start (CLI)](#quick-start-cli)
+- [Country-Consistent Styling](#country-consistent-styling)
 - [GUI Application](#gui-application)
+  - [Installation and Usage](#installation-and-usage)
+  - [Features (GUI)](#features-gui)
+  - [Platform Support](#platform-support)
+  - [Example Workflow](#example-workflow)
 - [CLI usage](#cli-usage)
   - [Format inference for `--out`](#format-inference-for---out)
   - [Examples](#examples)
@@ -36,15 +43,13 @@ This project provides a **CLI**, **GUI**, and **library API** to retrieve time s
   - [Plot charts](#plot-charts)
   - [Data model](#data-model)
 - [Data formats](#data-formats)
+  - [CSV](#csv)
+  - [JSON](#json)
 - [Security & reliability](#security--reliability)
 - [Testing](#testing)
-- [CI setup (example)](#ci-setup-example)
 - [Contributing](#contributing)
-- [Changelog (recent)](#changelog-recent)
 - [License](#license)
 - [Disclaimer](#disclaimer)
-
----
 
 ## Features
 
