@@ -4174,7 +4174,7 @@ dependencies = [
 
 [[package]]
 name = "wbi-rs"
-version = "0.1.7"
+version = "0.1.8"
 dependencies = [
  "ahash",
  "anyhow",
