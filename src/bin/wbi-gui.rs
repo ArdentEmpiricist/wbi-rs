@@ -59,6 +59,11 @@ struct WbiApp {
     legend_position: LegendPosition,
     plot_kind: PlotKindOption,
     country_styles: bool,
+    
+    // Custom filenames
+    csv_filename: String,
+    json_filename: String,
+    plot_filename: String,
 
     // UI state
     is_loading: bool,
@@ -134,6 +139,10 @@ impl WbiApp {
             legend_position: LegendPosition::Bottom,
             plot_kind: PlotKindOption::Line,
             country_styles: false,
+            
+            csv_filename: "wbi_data.csv".to_string(),
+            json_filename: "wbi_data.json".to_string(),
+            plot_filename: "wbi_chart".to_string(),
 
             is_loading: false,
             status_message: String::new(),
@@ -218,7 +227,7 @@ impl WbiApp {
         let plot_width = self.plot_width;
         let plot_height = self.plot_height;
         let plot_title = if self.plot_title.trim().is_empty() {
-            "World Bank Indicators".to_string()
+            "World Bank Indicator(s)".to_string()
         } else {
             self.plot_title.clone()
         };
@@ -226,6 +235,11 @@ impl WbiApp {
         let legend_position = self.legend_position.clone();
         let plot_kind = self.plot_kind.clone();
         let country_styles = self.country_styles;
+        
+        // Custom filenames
+        let csv_filename = self.csv_filename.clone();
+        let json_filename = self.json_filename.clone();
+        let plot_filename = self.plot_filename.clone();
 
         // Spawn background thread for the operation
         thread::spawn(move || {
@@ -239,6 +253,7 @@ impl WbiApp {
                     legend_position,
                     kind: plot_kind,
                     country_styles,
+                    filename: plot_filename,
                 })
             } else {
                 None
@@ -248,6 +263,8 @@ impl WbiApp {
                 export_format,
                 output_path,
                 plot_config,
+                csv_filename,
+                json_filename,
             };
 
             let result = perform_operation(countries, indicators, date_spec, source_id, config);
@@ -419,6 +436,49 @@ impl eframe::App for WbiApp {
                         ui.checkbox(&mut self.country_styles, "Use country-consistent styling")
                             .on_hover_text("Same countries use consistent colors across different indicators");
                     }
+                    
+                    // Custom filenames section
+                    ui.separator();
+                    ui.label("Custom Filenames:");
+                    
+                    // CSV/JSON filename options
+                    match self.export_format {
+                        ExportFormat::Csv => {
+                            ui.horizontal(|ui| {
+                                ui.label("CSV filename:");
+                                ui.text_edit_singleline(&mut self.csv_filename)
+                                    .on_hover_text("Custom filename for CSV export (without extension)");
+                            });
+                        }
+                        ExportFormat::Json => {
+                            ui.horizontal(|ui| {
+                                ui.label("JSON filename:");
+                                ui.text_edit_singleline(&mut self.json_filename)
+                                    .on_hover_text("Custom filename for JSON export (without extension)");
+                            });
+                        }
+                        ExportFormat::Both => {
+                            ui.horizontal(|ui| {
+                                ui.label("CSV filename:");
+                                ui.text_edit_singleline(&mut self.csv_filename)
+                                    .on_hover_text("Custom filename for CSV export (without extension)");
+                            });
+                            ui.horizontal(|ui| {
+                                ui.label("JSON filename:");
+                                ui.text_edit_singleline(&mut self.json_filename)
+                                    .on_hover_text("Custom filename for JSON export (without extension)");
+                            });
+                        }
+                    }
+                    
+                    // Plot filename option (only if creating plot)
+                    if self.create_plot {
+                        ui.horizontal(|ui| {
+                            ui.label("Chart filename:");
+                            ui.text_edit_singleline(&mut self.plot_filename)
+                                .on_hover_text("Custom filename for chart (without extension)");
+                        });
+                    }
                 });
 
                 ui.add_space(15.0);
@@ -462,6 +522,8 @@ struct OperationConfig {
     export_format: ExportFormat,
     output_path: String,
     plot_config: Option<PlotConfig>,
+    csv_filename: String,
+    json_filename: String,
 }
 
 #[derive(Debug)]
@@ -474,6 +536,7 @@ struct PlotConfig {
     legend_position: LegendPosition,
     kind: PlotKindOption,
     country_styles: bool,
+    filename: String,
 }
 
 fn perform_operation(
@@ -504,7 +567,13 @@ fn perform_operation(
 
     match config.export_format {
         ExportFormat::Csv | ExportFormat::Both => {
-            let csv_path = output_dir.join("wbi_data.csv");
+            // Ensure the filename has the correct extension
+            let csv_filename = if config.csv_filename.ends_with(".csv") {
+                config.csv_filename.clone()
+            } else {
+                format!("{}.csv", config.csv_filename)
+            };
+            let csv_path = output_dir.join(csv_filename);
             if let Err(err) = storage::save_csv(&points, &csv_path) {
                 return OperationResult::Error(format!("Failed to save CSV: {}", err));
             }
@@ -515,7 +584,13 @@ fn perform_operation(
 
     match config.export_format {
         ExportFormat::Json | ExportFormat::Both => {
-            let json_path = output_dir.join("wbi_data.json");
+            // Ensure the filename has the correct extension
+            let json_filename = if config.json_filename.ends_with(".json") {
+                config.json_filename.clone()
+            } else {
+                format!("{}.json", config.json_filename)
+            };
+            let json_path = output_dir.join(json_filename);
             if let Err(err) = storage::save_json(&points, &json_path) {
                 return OperationResult::Error(format!("Failed to save JSON: {}", err));
             }
@@ -530,7 +605,13 @@ fn perform_operation(
             PlotFormat::Png => "png",
             PlotFormat::Svg => "svg",
         };
-        let plot_path = output_dir.join(format!("wbi_chart.{}", plot_extension));
+        // Use custom filename, ensuring it doesn't already have an extension
+        let base_filename = if plot_config.filename.contains('.') {
+            plot_config.filename.clone()
+        } else {
+            format!("{}.{}", plot_config.filename, plot_extension)
+        };
+        let plot_path = output_dir.join(base_filename);
 
         // Convert GUI enums to library types
         let legend_mode = match plot_config.legend_position {
