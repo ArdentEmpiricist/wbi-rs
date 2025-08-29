@@ -532,11 +532,8 @@ where
 
     // Helper for legend labels
     let make_label_for_legend = |country_label: &str, indicator_label: &str| -> String {
-        if use_country_styles {
-            country_label.to_string()
-        } else {
-            make_label(country_label, indicator_label)
-        }
+        // Always use the standard labeling logic - country styles should only affect visual styling, not labels
+        make_label(country_label, indicator_label)
     };
 
     // De-duplicate legend labels when using country styles

@@ -106,9 +106,11 @@ fn country_styles_legend_dedups_country_right() {
 
     let s = fs::read_to_string(&svg_path).expect("read svg");
     let count_china = s.matches("China").count();
+    // With multiple indicators, China should appear multiple times in legend with indicator info
+    // For China with 2 indicators: "China — Population Total" and "China — Population Female %"
     assert!(
-        count_china == 1,
-        "expected exactly one 'China' in legend, got {}",
+        count_china == 2,
+        "expected exactly two 'China' entries in legend (one per indicator), got {}",
         count_china
     );
 
