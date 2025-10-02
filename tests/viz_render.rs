@@ -129,7 +129,6 @@ fn empty_points_is_error() {
 }
 
 #[test]
-#[cfg(feature = "country-styles")]
 fn test_dash_patterns_with_symbols() {
     // Create test data with multiple series to test dash patterns
     let mut points = sample_points();
