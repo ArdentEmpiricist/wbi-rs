@@ -5,6 +5,7 @@
 [![Documentation](https://docs.rs/wbi-rs/badge.svg)](https://docs.rs/wbi-rs/)
 [![Crates.io](https://img.shields.io/crates/d/wbi-rs?color=darkblue&label=Downloads)](https://crates.io/crates/wbi-rs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Rust Edition](https://img.shields.io/badge/rust-2024-orange)](https://doc.rust-lang.org/edition-guide/rust-2024/index.html)
 
 # wbi-rs 🦀📊📈
 
