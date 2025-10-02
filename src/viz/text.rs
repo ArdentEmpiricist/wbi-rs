@@ -27,6 +27,7 @@ pub fn truncate_to_width(text: &str, font_px: u32, max_px: u32) -> String {
 }
 
 /// Wrap text to fit within a maximum pixel width, breaking on word boundaries where possible.
+#[allow(clippy::redundant_else)]
 pub fn wrap_text_to_width(text: &str, font_px: u32, max_px: u32) -> Vec<String> {
     if max_px <= 12 {
         return vec![truncate_to_width(text, font_px, max_px)];

@@ -22,10 +22,16 @@ pub fn loess_series(xs: &[f64], ys: &[f64], span: f64) -> Vec<f64> {
         let idxw = &idx[..window];
         let max_d = (xs[*idxw.last().unwrap()] - xs[i]).abs();
         // Weights: tricube kernel
+        // Standard mathematical notation for weighted least squares
+        #[allow(clippy::similar_names)]
         let mut sw = 0.0;
+        #[allow(clippy::similar_names)]
         let mut swx = 0.0;
+        #[allow(clippy::similar_names)]
         let mut swy = 0.0;
+        #[allow(clippy::similar_names)]
         let mut swxx = 0.0;
+        #[allow(clippy::similar_names)]
         let mut swxy = 0.0;
         for &j in idxw {
             let d = (xs[j] - xs[i]).abs();

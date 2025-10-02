@@ -99,12 +99,20 @@ impl Client {
     /// Fetch units from the World Bank indicator endpoint for the given indicators.
     ///
     /// Returns a map from indicator ID to unit string. Missing indicators or those
-    /// without units will not be present in the returned HashMap.
+    /// without units will not be present in the returned `HashMap`.
     ///
-    /// ### Arguments
+    /// # Arguments
     /// - `indicators`: Indicator IDs to fetch metadata for (e.g., `["SP.POP.TOTL"]`).
     ///
-    /// ### Example
+    /// # Errors
+    ///
+    /// Returns an error if:
+    /// - Network request fails or times out
+    /// - HTTP response status is not successful (non-2xx)
+    /// - Response body cannot be parsed as JSON
+    /// - API returns an error message in the response
+    ///
+    /// # Example
     /// ```no_run
     /// # use wbi_rs::Client;
     /// let cli = Client::default();
@@ -121,7 +129,7 @@ impl Client {
             return Ok(HashMap::new());
         }
 
-        let indicator_spec = enc_join(indicators.iter().map(|s| s.as_str()));
+        let indicator_spec = enc_join(indicators.iter().map(String::as_str));
         let url = format!(
             "{}/indicator/{}?format=json&per_page=1000",
             self.base_url, indicator_spec
@@ -180,6 +188,7 @@ impl Client {
 
     /// Fetch indicator observations.
     ///
+    /// # Arguments
     /// - `countries`: ISO2 (e.g., "DE") or ISO3 (e.g., "DEU") or aggregates (e.g., "EUU"). Multiple accepted.
     /// - `indicators`: e.g., "SP.POP.TOTL". Multiple accepted.
     /// - `date`: A single year or inclusive range.
@@ -187,6 +196,17 @@ impl Client {
     ///   for efficient single-call multi-indicator requests. When `source` is `None` and multiple
     ///   indicators are requested, this method automatically falls back to individual requests
     ///   per indicator and merges the results.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if:
+    /// - No countries provided (empty slice)
+    /// - No indicators provided (empty slice)
+    /// - Network request fails or times out
+    /// - HTTP response status is not successful (non-2xx)
+    /// - Response body cannot be parsed as JSON
+    /// - API returns an error message in the response
+    /// - Page limit exceeded (safety limit: 1000 pages)
     pub fn fetch(
         &self,
         countries: &[String],
@@ -212,8 +232,8 @@ impl Client {
             return Ok(all_points);
         }
 
-        let country_spec = enc_join(countries.iter().map(|s| s.as_str()));
-        let indicator_spec = enc_join(indicators.iter().map(|s| s.as_str()));
+        let country_spec = enc_join(countries.iter().map(String::as_str));
+        let indicator_spec = enc_join(indicators.iter().map(String::as_str));
 
         let mut url = format!(
             "{}/country/{}/indicator/{}?format=json&per_page=1000",

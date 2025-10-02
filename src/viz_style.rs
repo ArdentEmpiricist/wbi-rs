@@ -149,6 +149,8 @@ fn map_u64_to_range(x: u64, min: f64, max: f64) -> f64 {
 }
 
 // HSL -> RGB conversion (linear; sufficient for chart colors)
+// Standard graphics algorithm using single-char variable names
+#[allow(clippy::many_single_char_names)]
 fn hsl_to_rgb8(hsl: Hsl) -> Rgb8 {
     let h = (hsl.h_deg % 360.0) / 360.0;
     let s = clamp01(hsl.s);

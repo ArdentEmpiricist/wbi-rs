@@ -2,7 +2,7 @@
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/ArdentEmpiricist/wbi-rs/refs/heads/main/assets/logo.png"
 )]
-//! # wbi_rs
+//! # `wbi_rs`
 //!
 //! A lightweight **Rust library + CLI** to fetch, store, visualize, and summarize
 //! [World Bank Indicators API](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation)

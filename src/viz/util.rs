@@ -75,13 +75,14 @@ pub fn derive_axis_unit(points: &[DataPoint]) -> Option<String> {
         .collect();
 
     if units.len() == 1 {
-        return Some(units.iter().next().unwrap().to_string());
+        return units.iter().next().map(|u| u.to_string());
     }
 
     // 2) Fall back to existing behavior: extract from indicator name if single indicator
     let names: BTreeSet<&str> = points.iter().map(|p| p.indicator_name.as_str()).collect();
     if names.len() == 1 {
-        extract_unit_from_indicator_name(names.iter().next().unwrap())
+        names.iter().next()
+            .and_then(|name| extract_unit_from_indicator_name(name))
     } else {
         None
     }

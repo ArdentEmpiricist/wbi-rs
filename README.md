@@ -1,7 +1,40 @@
 
 [![Crates.io](https://img.shields.io/crates/v/wbi-rs?label=Crates.io)](https://crates.io/crates/wbi-rs)
 [![rust-clippy analyze](https://img.shields.io/github/actions/workflow/status/ardentempiricist/wbi-rs/rust-clippy.yml?label=Rust%20Clippy)](https://github.com/ArdentEmpiricist/wbi-rs/actions/workflows/rust-clippy.yml)
-[![Deploy](https://github.com/ArdentEmpiricist/wbi-rs/actions/workflows/deploy.yml/badge.svg)](https://github.com/ArdentEmpiricist/wbi-rs/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/ArdentEmpiricist/wbi-rs/actions/workflows/deploy.yml/ba## Security & reliability
+
+- **Networking**
+  - TLS via `rustls`
+  - Request + connect timeouts, limited redirects
+  - Descriptive `User-Agent`
+  - Percent-encoding for user-supplied path segments
+  - Small retry/backoff on transient failures
+  - Hard cap on pages to avoid runaway jobs
+- **Exports**
+  - **Atomic writes** for CSV/JSON
+  - **CSV formula guard**
+  - **Valid JSON** under all numeric inputs
+- **Numerics**
+  - Non-finite values filtered/treated as missing
+  - Safe sorting; integer year ordering for plots
+- **Rendering**
+  - Embedded font registration avoids "FontUnavailable" in headless/CI
+
+### Security Advisories
+
+**Known Advisory (Low Impact):**
+- The `paste` crate (used transitively via GUI dependencies) is unmaintained but poses no security risk in this context
+- Impact: **GUI application only** (not CLI or library)
+- Risk level: Low (no known vulnerabilities, used only for compile-time code generation)
+- Mitigation: Will be addressed when dependencies update to alternatives
+
+To check for security advisories in your installation:
+```bash
+cargo install cargo-audit
+cargo audit
+```
+
+---thub.com/ArdentEmpiricist/wbi-rs/actions/workflows/deploy.yml)
 [![Documentation](https://docs.rs/wbi-rs/badge.svg)](https://docs.rs/wbi-rs/)
 [![Crates.io](https://img.shields.io/crates/d/wbi-rs?color=darkblue&label=Downloads)](https://crates.io/crates/wbi-rs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
