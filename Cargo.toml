@@ -66,7 +66,7 @@ ahash = "0.8.12"
 # GUI dependencies
 eframe = "0.33.0"
 egui = "0.33.0"
-rfd = "0.15"
+rfd = "0.16"
 dirs = "6.0.0"
 env_logger = "0.11"
 
