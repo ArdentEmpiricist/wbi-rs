@@ -1,10 +1,10 @@
-use assert_cmd::prelude::*;
+use assert_cmd::{cargo, prelude::*};
 use predicates::prelude::*;
 use std::process::Command;
 
 #[test]
 fn cli_shows_help() {
-    let mut cmd = Command::cargo_bin("wbi").unwrap();
+    let mut cmd = Command::new(cargo::cargo_bin!("wbi"));
     cmd.arg("--help");
     cmd.assert()
         .success()
@@ -15,7 +15,7 @@ fn cli_shows_help() {
 #[cfg(feature = "online")]
 #[test]
 fn fetch_online_population() {
-    let mut cmd = Command::cargo_bin("wbi").unwrap();
+    let mut cmd = Command::new(cargo::cargo_bin!("wbi"));
     cmd.args([
         "get",
         "--countries",
