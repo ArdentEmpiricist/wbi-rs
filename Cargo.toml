@@ -60,7 +60,7 @@ plotters-svg = "0.3.7"
 chrono = { version = "0.4.42", features = ["serde"] }
 regex = "1.12.2"
 num-format = "0.4.4"
-tempfile = "3.23.0"
+tempfile = "3.24.0"
 percent-encoding = "2.3.1"
 ahash = "0.8.12"
 # GUI dependencies
@@ -74,5 +74,5 @@ env_logger = "0.11"
 [dev-dependencies]
 assert_cmd = "2.1.1"
 predicates = "3.1.3"
-tempfile = "3.23.0"
+tempfile = "3.24.0"
 serde_json = "1.0.142"
