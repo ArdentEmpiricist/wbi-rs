@@ -45,7 +45,7 @@ reqwest = { version = "0.12.28", default-features = false, features = [
     "rustls-tls",
 ] }
 csv = "1.4.0"
-clap = { version = "4.5.53", features = ["derive"] }
+clap = { version = "4.5.54", features = ["derive"] }
 # Plotters with pure-Rust font path (no system fontconfig) and needed series/backends.
 plotters = { version = "0.3.7", default-features = false, features = [
     "ab_glyph",
