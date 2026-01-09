@@ -2,25 +2,13 @@
 
 //! Flexible, testable style assignment system for country-consistent styling.
 //!
-//! When enabled via the `country-styles` feature flag, this module provides
-//! a styling system where all series for the same country share one base hue
-//! from the MS Office palette, while indicators within that country are
+//! This module provides a styling system where all series for the same country share
+//! one base hue from the MS Office palette, while indicators within that country are
 //! differentiated by shades, marker shapes, and line dash patterns.
-//!
-//! # Usage
-//!
-//! This module is only available when the `country-styles` feature is enabled:
-//!
-//! ```toml
-//! [dependencies]
-//! wbi_rs = { version = "0.1", features = ["country-styles"] }
-//! ```
 //!
 //! # Example
 //!
 //! ```rust
-//! # #[cfg(feature = "country-styles")]
-//! # {
 //! use wbi_rs::style::{SeriesKey, assign_country_styles};
 //!
 //! let series = vec![
@@ -33,7 +21,6 @@
 //!
 //! // All USA series will have the same base_hue
 //! // Different indicators will have different shades, markers, and dash patterns
-//! # }
 //! ```
 //!
 //! # Design Principles

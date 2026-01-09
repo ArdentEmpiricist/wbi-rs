@@ -96,6 +96,22 @@ fn enc_join<'a>(parts: impl IntoIterator<Item = &'a str>) -> String {
 }
 
 impl Client {
+    fn get_json_with_retry(&self, url: &str) -> Result<Value> {
+        let mut last_err: Option<anyhow::Error> = None;
+        for backoff_ms in [100u64, 300, 700] {
+            match self.http.get(url).send() {
+                Ok(r) if r.status().is_success() => {
+                    return r.json().context("decode json");
+                }
+                Ok(r) if r.status().is_server_error() => { /* retry */ }
+                Ok(r) => bail!("request failed with HTTP {}", r.status()),
+                Err(e) => last_err = Some(e.into()),
+            }
+            std::thread::sleep(Duration::from_millis(backoff_ms));
+        }
+        bail!("network error: {:?}", last_err);
+    }
+
     /// Fetch units from the World Bank indicator endpoint for the given indicators.
     ///
     /// Returns a map from indicator ID to unit string. Missing indicators or those
@@ -135,24 +151,9 @@ impl Client {
             self.base_url, indicator_spec
         );
 
-        // Use the same retry logic as the main fetch method
-        let get_json = |u: &str| -> Result<Value> {
-            let mut last_err: Option<anyhow::Error> = None;
-            for backoff_ms in [100u64, 300, 700] {
-                match self.http.get(u).send() {
-                    Ok(r) if r.status().is_success() => {
-                        return r.json().context("decode json");
-                    }
-                    Ok(r) if r.status().is_server_error() => { /* retry */ }
-                    Ok(r) => bail!("request failed with HTTP {}", r.status()),
-                    Err(e) => last_err = Some(e.into()),
-                }
-                std::thread::sleep(Duration::from_millis(backoff_ms));
-            }
-            bail!("network error: {:?}", last_err);
-        };
-
-        let v: Value = get_json(&url).with_context(|| format!("GET {}", url))?;
+        let v: Value = self
+            .get_json_with_retry(&url)
+            .with_context(|| format!("GET {}", url))?;
 
         // Parse the response (same structure as data endpoint: [Meta, [IndicatorMeta, ...]])
         let arr = v
@@ -246,23 +247,6 @@ impl Client {
             url.push_str(&format!("&source={}", s));
         }
 
-        // Small retry for transient failures (5xx / network errors)
-        let get_json = |u: &str| -> Result<Value> {
-            let mut last_err: Option<anyhow::Error> = None;
-            for backoff_ms in [100u64, 300, 700] {
-                match self.http.get(u).send() {
-                    Ok(r) if r.status().is_success() => {
-                        return r.json().context("decode json");
-                    }
-                    Ok(r) if r.status().is_server_error() => { /* retry */ }
-                    Ok(r) => bail!("request failed with HTTP {}", r.status()),
-                    Err(e) => last_err = Some(e.into()),
-                }
-                std::thread::sleep(Duration::from_millis(backoff_ms));
-            }
-            bail!("network error: {:?}", last_err);
-        };
-
         // Safety cap to avoid pathological jobs
         let max_pages = 1000u32;
 
@@ -274,7 +258,9 @@ impl Client {
             if page > max_pages {
                 bail!("page limit exceeded ({})", max_pages);
             }
-            let v: Value = get_json(&page_url).with_context(|| format!("GET {}", page_url))?;
+            let v: Value = self
+                .get_json_with_retry(&page_url)
+                .with_context(|| format!("GET {}", page_url))?;
 
             // The API returns an array: [Meta, [Entry, ...]] or a "message" object in position 0 on error.
             let arr = v.as_array().ok_or_else(|| {

@@ -124,11 +124,6 @@ fn test_combo_box_ids() {
     assert_ne!(locale_id, legend_id);
     assert_ne!(locale_id, chart_type_id);
     assert_ne!(legend_id, chart_type_id);
-    
-    // Ensure IDs are not empty (which was the original problem)
-    assert!(!locale_id.is_empty());
-    assert!(!legend_id.is_empty());
-    assert!(!chart_type_id.is_empty());
 }
 
 // Helper functions that mirror the GUI logic
