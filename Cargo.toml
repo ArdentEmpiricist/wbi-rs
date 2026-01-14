@@ -57,7 +57,7 @@ plotters = { version = "0.3.7", default-features = false, features = [
 # Bitmap backend with file output (`BitMapBackend::new`) via the `image` feature
 plotters-bitmap = { version = "0.3.7", features = ["image"] }
 plotters-svg = "0.3.7"
-chrono = { version = "0.4.42", features = ["serde"] }
+chrono = { version = "0.4.43", features = ["serde"] }
 regex = "1.12.2"
 num-format = "0.4.4"
 tempfile = "3.24.0"
