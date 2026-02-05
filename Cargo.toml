@@ -35,7 +35,7 @@ path = "src/bin/wbi-gui.rs"
 online = []
 
 [dependencies]
-anyhow = "1.0.100"
+anyhow = "1.0.101"
 thiserror = "2.0.18"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
