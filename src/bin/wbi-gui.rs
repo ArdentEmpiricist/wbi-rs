@@ -295,17 +295,16 @@ impl WbiApp {
 }
 
 impl eframe::App for WbiApp {
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         // Check for completed background operations
         self.check_operation_result();
 
         // Request repaint if loading (for spinner animation)
         if self.is_loading {
-            ctx.request_repaint();
+            ui.ctx().request_repaint();
         }
 
-        egui::CentralPanel::default().show(ctx, |ui| {
-            egui::ScrollArea::vertical().show(ui, |ui| {
+        egui::ScrollArea::vertical().show(ui, |ui| {
                 ui.heading("wbi-rs - A Tool To Fetch World Bank Indicator Data");
                 ui.add_space(10.0);
 
@@ -505,7 +504,6 @@ impl eframe::App for WbiApp {
                 if !self.error_message.is_empty() {
                     ui.colored_label(egui::Color32::RED, &self.error_message);
                 }
-            });
         });
     }
 }
